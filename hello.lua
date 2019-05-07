@@ -63,3 +63,47 @@ print("*************************************************************************
 -- Tables are powerful enough to implement other data structures, such as lists, queues, or stacks.
 -- Lua is not object-oriented; the language does not have support for objects. 
 -- However, using tables and meta-tables, an object system can be implemented from the ground up.
+tbl = {} -- Creates table, assigns it to tbl variable
+print("The type of a table is: " .. type(tbl))
+
+
+print("**************************************************************************************************************")
+-- Closures
+-- Closures capture the enclosing state of a chunk. 
+-- A great example of this is having a function that returns an anonymous function. 
+-- The anonymous function can see the local variables of the enclosing function. 
+-- However, because the anonymous function is returned, it can outlive the existing function.
+
+-- When returning an anonymous function, it creates a closure. 
+-- This closure captures its enclosing state (visible chunks). 
+-- This mechanism lets you access the state of the enclosing function, even though that function is no longer executing.
+    
+function NextNumber()
+  -- local to the NextNumber function
+  local currentNumber = 0
+  return function () -- anonymous function
+    -- Because this anonymous function is
+    -- created inside the NextNumber function
+    -- it can see all members of NextNumber
+    -- this function will remember the state
+    -- of NextNumber, creating a closure!
+    currentNumber = currentNumber + 1
+
+    return currentNumber
+  end
+end
+
+-- Assign the anonymous function to the variable next
+next = NextNumber()
+-- At this point, NextNumber has finished executing.
+
+print (next()) -- call anonymous function using next
+print (next()) -- call anonymous function using next
+print (next()) -- call anonymous function using next
+
+-- currentNumber does not exist in a global context!
+print (currentNumber) -- will print nil
+
+-- The NextNumber function in this example is often called a factory.
+-- The function is called a factory because every time you call the function, it produces a new closure.
+-- You can then call the resulting function.
